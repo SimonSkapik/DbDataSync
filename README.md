@@ -58,8 +58,8 @@ dotnet publish DataSync -c Release
     "Target": "Server=localhost\\SQLEXPRESS;Database=master;Integrated Security=true;TrustServerCertificate=true;"
   },
   "Sync": {
-    "SourceDatabase": "esticon_db",
-    "TargetDatabase": "esticon_db"
+    "SourceDatabase": "source_db_name",
+    "TargetDatabase": "target_db_name"
   }
 }
 ```
