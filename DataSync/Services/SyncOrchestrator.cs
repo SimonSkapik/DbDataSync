@@ -102,7 +102,20 @@ public class SyncOrchestrator
     {
         var filtered = all.AsEnumerable();
 
-        if (_options.Blacklist.Count > 0)
+        if (_options.Whitelist.Count > 0)
+        {
+            // Whitelist takes priority over the blacklist: only whitelisted objects are synced.
+            var whitelist = new HashSet<string>(_options.Whitelist, StringComparer.OrdinalIgnoreCase);
+            var matched = all.Where(s => whitelist.Contains(s.DisplayName) || whitelist.Contains(s.ObjectName)).ToList();
+            var missing = whitelist.Where(w => !matched.Any(m =>
+                string.Equals(m.DisplayName, w, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(m.ObjectName, w, StringComparison.OrdinalIgnoreCase))).ToList();
+            foreach (var m in missing)
+                Console.Error.WriteLine($"WARN: whitelist entry '{m}' not found in source; skipping.");
+            _logger.LogInformation("Whitelist active: {Count} of {Total} objects selected", matched.Count, all.Count);
+            filtered = matched;
+        }
+        else if (_options.Blacklist.Count > 0)
         {
             var blacklist = new HashSet<string>(_options.Blacklist, StringComparer.OrdinalIgnoreCase);
             filtered = filtered.Where(s => !blacklist.Contains(s.DisplayName) && !blacklist.Contains(s.ObjectName));
