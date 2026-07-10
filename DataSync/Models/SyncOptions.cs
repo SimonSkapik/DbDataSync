@@ -8,6 +8,7 @@ public class SyncOptions
     public int BulkCopyTimeout { get; set; } = 120;
     public int CommandTimeout { get; set; } = 60;
     public bool StrictNullability { get; set; } = false;
+    public List<string> Whitelist { get; set; } = new();
     public List<string> Blacklist { get; set; } = new();
 
     public string SourceConnectionString { get; set; } = "";
