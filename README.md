@@ -31,12 +31,12 @@ dotnet publish DataSync -c Release
 ```json
 {
   "ConnectionStrings": {
-    "Source": "Server=localhost\\SQL2022;Database=master;Integrated Security=true;TrustServerCertificate=true;",
-    "Target": "Server=localhost\\SQLEXPRESS;Database=master;Integrated Security=true;TrustServerCertificate=true;"
+    "Source": "Server=SOURCE_SERVER;Database=master;Integrated Security=true;TrustServerCertificate=true;",
+    "Target": "Server=TARGET_SERVER;Database=master;Integrated Security=true;TrustServerCertificate=true;"
   },
   "Sync": {
-    "SourceDatabase": "esticon_db",
-    "TargetDatabase": "esticon_db",
+    "SourceDatabase": "your_database",
+    "TargetDatabase": "your_database",
     "BatchSize": 5000,
     "BulkCopyTimeout": 120,
     "CommandTimeout": 60,
@@ -46,6 +46,25 @@ dotnet publish DataSync -c Release
   }
 }
 ```
+
+### Local overrides — `appsettings.local.json`
+
+`appsettings.json` in the repo holds placeholder values only. Real connection strings and database names belong in `DataSync/appsettings.local.json`, which is **gitignored** and loaded automatically (optional, applied on top of `appsettings.json`) by `Program.cs`. Copy the keys you need to override:
+
+```json
+{
+  "ConnectionStrings": {
+    "Source": "Server=localhost\\SQL2022;Database=master;Integrated Security=true;TrustServerCertificate=true;",
+    "Target": "Server=localhost\\SQLEXPRESS;Database=master;Integrated Security=true;TrustServerCertificate=true;"
+  },
+  "Sync": {
+    "SourceDatabase": "source_db_name",
+    "TargetDatabase": "target_db_name"
+  }
+}
+```
+
+You only need to include the keys you want to override — anything omitted falls back to `appsettings.json`. The build copies `appsettings.local.json` to the output directory automatically when the file exists.
 
 | Key | Type | Description |
 |---|---|---|

@@ -72,6 +72,7 @@ artifacts/
 # ---------------------------------------------------------------
 # Local config / secrets (appsettings.* stays in repo; .local overrides do not)
 # ---------------------------------------------------------------
+appsettings.local.json
 appsettings.*.local.json
 appsettings.Development.json
 secrets.json
